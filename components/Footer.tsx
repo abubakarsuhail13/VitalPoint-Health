@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="pt-16 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center text-slate-400 text-[10px] font-black uppercase tracking-[0.3em]">
-          <p>© 2025 VitalPoint Health Systems • Powered by Nexaforge Technologies</p>
+          <p>© 2026 VitalPoint Health Systems • Powered by Nexaforge Technologies</p>
           <div className="flex items-center space-x-1 mt-8 md:mt-0">
             <span>Built for the future of care</span>
             <Heart className="w-4 h-4 text-red-500 fill-current ml-2" />
