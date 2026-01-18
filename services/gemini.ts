@@ -1,27 +1,49 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+/**
+ * Safely retrieves the API Key. 
+ * In a Vercel/Vite environment, process.env is usually 
+ * handled by the build tool or a global shim.
+ */
+const getApiKey = (): string => {
+  try {
+    // Check for process.env or fallback to empty string
+    return (typeof process !== 'undefined' && process.env?.API_KEY) || "";
+  } catch (e) {
+    return "";
+  }
+};
 
-export const getHealthAssistantResponse = async (userMessage: string) => {
+const apiKey = getApiKey();
+const ai = new GoogleGenAI({ apiKey });
+
+export const getHealthAssistantResponse = async (userMessage: string): Promise<string> => {
+  if (!apiKey) {
+    console.warn("VitalPoint: API_KEY is missing. AI Assistant functionality is limited.");
+    return "I'm currently in 'Launch Preview' mode. Once we go live in 2025, I'll be able to answer all your healthcare infrastructure questions!";
+  }
+
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: userMessage,
       config: {
-        systemInstruction: `You are a helpful and professional Health Assistant for VitalPoint Health, a modern US-based healthcare system launching soon.
-        The technology is powered by Nexaforge Technologies. 
-        Your tone should be empathetic, professional, and clear. 
-        Focus on explaining how a modern digital-first healthcare system can benefit patients through better interoperability and security.
-        IMPORTANT: Provide information for educational purposes only. Always advise users to consult with a licensed US medical professional for diagnosis or treatment. 
-        Keep responses concise and formatted with markdown if needed.`,
+        systemInstruction: `You are the VitalPoint Health AI Assistant, powered by Nexaforge Technologies. 
+        VitalPoint is a revolutionary unified healthcare infrastructure launching across the USA in 2025.
+        Our core tech is the Nexaforge High-Availability Mesh, ensuring HIPAA compliance and sub-second data sharing between US providers.
+        
+        Your tone: Professional, empathetic, and innovative.
+        Your goal: Help users understand the benefits of a unified health system.
+        
+        IMPORTANT: Provide information for educational/promotional purposes only. Always advise users to consult with a licensed US medical professional for diagnosis.`,
         temperature: 0.7,
       },
     });
 
-    return response.text || "I'm sorry, I'm having trouble processing that right now. How can I help you with our upcoming system launch?";
+    return response.text || "I'm analyzing that request. How else can I help you with the VitalPoint rollout?";
   } catch (error) {
     console.error("Gemini API Error:", error);
-    return "I am currently initializing my systems. Please check back in a moment!";
+    return "Our intelligence systems are currently synchronizing with the Nexaforge Mesh. Please try again in a moment.";
   }
 };
