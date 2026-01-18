@@ -1,0 +1,7 @@
+{
+  "name": "VitalPoint Health - Upcoming Healthcare Launch",
+  "description": "A premium, fully animated landing page for a modern US-based healthcare system launch, featuring AI-powered health insights and cutting-edge motion design.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
